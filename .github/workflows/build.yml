@@ -1,0 +1,96 @@
+name: Build dhreLink Installer
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Create a GitHub Release with the installer'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build & Package Windows Installer
+    runs-on: windows-2022
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          choco install innosetup --no-progress
+          $innoPath = "C:\Program Files (x86)\Inno Setup 6"
+          if (Test-Path $innoPath) {
+            Write-Host "Adding $innoPath to GITHUB_PATH"
+            "$innoPath" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          }
+
+      - name: Download OBS Studio 32.2.2 Runtime
+        shell: pwsh
+        run: |
+          $obsZipUrl = "https://github.com/obsproject/obs-studio/releases/download/32.2.2/OBS-Studio-32.2.2-Windows-x64.zip"
+          $obsZipPath = Join-Path $env:RUNNER_TEMP "obs-32.2.2.zip"
+          $obsExtractDir = Join-Path $env:RUNNER_TEMP "obs-runtime"
+
+          Write-Host "Downloading OBS Studio 32.2.2 from $obsZipUrl..."
+          Invoke-WebRequest -Uri $obsZipUrl -OutFile $obsZipPath
+
+          Write-Host "Extracting OBS Studio to $obsExtractDir..."
+          Expand-Archive -Path $obsZipPath -DestinationPath $obsExtractDir -Force
+
+          $obsDll = Join-Path $obsExtractDir "bin\64bit\obs.dll"
+          if (-not (Test-Path $obsDll)) {
+            throw "obs.dll was not found at expected location: $obsDll"
+          }
+          Write-Host "OBS runtime ready at: $obsDll"
+          "OBS_RUNTIME_DLL=$obsDll" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Bootstrap Dependencies (VST3 SDK & OBS source)
+        shell: pwsh
+        run: |
+          .\scripts\bootstrap-dependencies.ps1
+
+      - name: Build Release & Package Installer
+        shell: pwsh
+        run: |
+          .\scripts\build-release.ps1 -ObsRuntimeDll "$env:OBS_RUNTIME_DLL"
+
+      - name: Verify Installer Output
+        shell: pwsh
+        run: |
+          $installerPath = "dist\installer\dhreLink-1.0.0-x64-Setup.exe"
+          if (-not (Test-Path -LiteralPath $installerPath)) {
+            throw "Expected installer was not produced: $installerPath"
+          }
+          $hash = (Get-FileHash -LiteralPath $installerPath -Algorithm SHA256).Hash
+          Write-Host "Installer created successfully!"
+          Write-Host "File: $installerPath"
+          Write-Host "SHA256: $hash"
+
+      - name: Upload Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dhreLink-1.0.0-x64-Setup
+          path: dist/installer/dhreLink-1.0.0-x64-Setup.exe
+          if-no-files-found: error
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.create_release == true)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'v1.0.0' }}
+          name: dhreLink ${{ github.ref_type == 'tag' && github.ref_name || '1.0.0' }}
+          files: dist/installer/dhreLink-1.0.0-x64-Setup.exe
+          draft: false
+          prerelease: false
