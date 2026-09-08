@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dhreLink VST3 UI</title>
+  <style>
+    @font-face {
+      font-family: "Quintessential";
+      src: url("../../src/vst3/resources/fonts/Quintessential-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "Montserrat";
+      src: url("../../src/vst3/resources/fonts/Montserrat-Variable.ttf") format("truetype");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+
+    :root {
+      color-scheme: dark;
+      font-synthesis: none;
+      --black: #0a0a0c;
+      --surface: #161619;
+      --raised: #222227;
+      --line: #34343a;
+      --white: #ffffff;
+      --muted: #9f9fa9;
+      --purple: #8a6cff;
+      --connected: #5fe39b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 360px;
+      height: 152px;
+      margin: 0;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .plugin {
+      position: relative;
+      width: 360px;
+      height: 152px;
+      overflow: hidden;
+      background: var(--black);
+      color: var(--white);
+      font-family: "Montserrat", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .topbar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 39px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .logo {
+      display: block;
+      width: 28px;
+      height: 28px;
+      flex: none;
+    }
+
+    .brand {
+      margin: 1px 0 0 7px;
+      font-family: "Quintessential", serif;
+      font-size: 23px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.2px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--connected);
+    }
+
+    .route {
+      position: absolute;
+      inset: 49px 14px auto;
+      height: 24px;
+    }
+
+    .endpoint {
+      position: absolute;
+      top: 0;
+      display: grid;
+      width: 50px;
+      height: 24px;
+      place-items: center;
+      background: var(--raised);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .endpoint.daw {
+      left: 0;
+    }
+
+    .endpoint.obs {
+      right: 0;
+    }
+
+    .route-arrow {
+      position: absolute;
+      top: 0;
+      right: 58px;
+      left: 58px;
+      width: calc(100% - 116px);
+      height: 24px;
+      overflow: visible;
+    }
+
+    .meters {
+      position: absolute;
+      top: 81px;
+      right: 14px;
+      left: 14px;
+      display: grid;
+      row-gap: 11px;
+    }
+
+    .meter {
+      display: grid;
+      grid-template-columns: 12px 1fr;
+      align-items: center;
+      column-gap: 6px;
+      height: 6px;
+    }
+
+    .meter-label {
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .meter-track {
+      height: 6px;
+      overflow: hidden;
+      background: var(--raised);
+    }
+
+    .meter-level {
+      height: 100%;
+      background: var(--purple);
+    }
+
+    .meter:first-child .meter-level {
+      width: 76%;
+    }
+
+    .meter:last-child .meter-level {
+      width: 62%;
+    }
+
+    .footer {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .credit {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-left: auto;
+    }
+
+    .signature {
+      margin-top: 1px;
+      color: var(--white);
+      font-family: "Quintessential", serif;
+      font-size: 15px;
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+  <main class="plugin" aria-label="Interfaz de dhreLink Sender">
+    <header class="topbar">
+      <svg class="logo" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+        <path d="M25 18h-7C10.8 18 6 23.5 6 32s4.8 14 12 14h8"
+              stroke="#8A6CFF" stroke-width="6" stroke-linecap="round"/>
+        <path d="M39 18h7c7.2 0 12 5.5 12 14s-4.8 14-12 14h-8"
+              stroke="#8A6CFF" stroke-width="6" stroke-linecap="round"/>
+        <path d="M17 32h9l4-9 7 18 4-9h7"
+              stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="brand">dhreLink</div>
+      <div class="status">
+        <span class="status-dot"></span>
+        <span>Connected</span>
+      </div>
+    </header>
+
+    <section class="route" aria-label="Ruta de audio desde el DAW hasta OBS">
+      <div class="endpoint daw">DAW</div>
+      <svg class="route-arrow" viewBox="0 0 216 24" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M1 12H214M207 5L214 12L207 19"
+              fill="none" stroke="#8A6CFF" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"
+              vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="endpoint obs">OBS</div>
+    </section>
+
+    <section class="meters" aria-label="Niveles de audio">
+      <div class="meter">
+        <span class="meter-label">L</span>
+        <div class="meter-track"><div class="meter-level"></div></div>
+      </div>
+      <div class="meter">
+        <span class="meter-label">R</span>
+        <div class="meter-track"><div class="meter-level"></div></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>48 kHz&nbsp; | &nbsp;2 ch</span>
+      <span class="credit">
+        <span>Developed by</span>
+        <span class="signature">dhreian</span>
+      </span>
+    </footer>
+  </main>
+</body>
+</html>

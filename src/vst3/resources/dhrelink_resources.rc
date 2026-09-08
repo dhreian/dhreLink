@@ -1,0 +1,5 @@
+#include "resource.h"
+
+IDR_FONT_QUINTESSENTIAL RCDATA "fonts\\Quintessential-Regular.ttf"
+IDR_FONT_MONTSERRAT RCDATA "fonts\\Montserrat-Variable.ttf"
+

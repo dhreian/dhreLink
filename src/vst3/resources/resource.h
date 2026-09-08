@@ -1,0 +1,5 @@
+#pragma once
+
+#define IDR_FONT_QUINTESSENTIAL 101
+#define IDR_FONT_MONTSERRAT 102
+

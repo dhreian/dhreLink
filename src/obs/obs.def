@@ -1,0 +1,10 @@
+LIBRARY obs.dll
+EXPORTS
+  obs_find_module_file
+  obs_properties_add_text
+  obs_properties_create
+  obs_property_text_set_info_type
+  obs_register_source_s
+  obs_source_output_audio
+  obs_source_update_properties
+  os_gettime_ns

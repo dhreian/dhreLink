@@ -1,0 +1,21 @@
+# Dependencies and generated output
+/.deps/
+/build/
+/build-*/
+/dist/
+/out/
+
+# IDE and compiler state
+/.vs/
+/.vscode/
+/.idea/
+*.user
+*.suo
+*.VC.db
+*.VC.VC.opendb
+
+# Logs, coverage, and operating-system files
+*.log
+/coverage/
+Thumbs.db
+.DS_Store
