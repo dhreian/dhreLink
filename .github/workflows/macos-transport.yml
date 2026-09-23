@@ -7,6 +7,8 @@ on:
       - CMakeLists.txt
       - src/core/**
       - src/vst3/**
+      - src/obs/**
+      - scripts/build-obs-macos.sh
       - tests/transport_test.cpp
   workflow_dispatch:
 
@@ -43,3 +45,18 @@ jobs:
           -DVST3_SDK_ROOT="$PWD/.deps/vst3sdk"
       - name: Build universal VST3 Sender
         run: cmake --build build/macos-vst3 --config Release --target dhrelink_sender --parallel 3
+
+  receiver:
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build universal OBS Receiver
+        run: bash scripts/build-obs-macos.sh
+      - name: Upload unsigned OBS bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: dhreLink-Receiver-macos-universal-unsigned
+          path: dist/dhreLink-Receiver-macos-universal-unsigned.zip
+          if-no-files-found: error
+          retention-days: 3
