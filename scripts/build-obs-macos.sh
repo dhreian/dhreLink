@@ -47,6 +47,6 @@ codesign --verify --deep --strict "$bundle"
 
 dist_dir="$repo_dir/dist"
 mkdir -p "$dist_dir"
-(cd "$build_dir/Release" && ditto -c -k --sequesterRsrc dhreLink.plugin \
+(cd "$build_dir/Release" && ditto -c -k --sequesterRsrc --keepParent dhreLink.plugin \
   "$dist_dir/dhreLink-Receiver-macos-universal-unsigned.zip")
 echo "OBS Receiver: $dist_dir/dhreLink-Receiver-macos-universal-unsigned.zip"

@@ -1,9 +1,9 @@
 # dhreLink para macOS: estado y requisitos
 
-**Estado actual:** no existe un instalador macOS funcional. El binario de Windows
-no puede incluirse en un `.pkg` para Mac. El producto requiere que funcionen
-juntos `dhreLink Sender` (VST3) y `dhreLink Receiver` (modulo de OBS); entregar
-solo uno de ellos produciria una instalacion inutilizable.
+**Estado actual:** el Sender VST3 universal, el receptor OBS universal y el
+transporte local ya compilan en GitHub Actions. El empaquetado `.pkg` y `.zip`
+esta automatizado pero aun requiere verificar su resultado y probar audio real
+entre un DAW y OBS en Mac. No se anuncia todavia una version funcional.
 
 ## Trabajo de portabilidad necesario
 
@@ -15,22 +15,20 @@ solo uno de ellos produciria una instalacion inutilizable.
    editor macOS muestra conexion y formato de audio, y el build universal
    (`arm64` y `x86_64`) se comprueba en CI. Los recursos `.rc` e `.ico` y los
    enlaces a `user32`/`gdi32` quedan limitados a Windows.
-3. Compilar el receptor como bundle `.plugin` para OBS macOS, enlazado contra
-   una version compatible de `libobs`. La logica de recepcion de audio es en gran
-   parte independiente de Windows, pero el CMake actual exige `obs.lib` y
-   `obs.dll` de Windows.
+3. Probar el receptor `.plugin` dentro de OBS en macOS. Su build universal usa
+   el template oficial de OBS y `libobs` 32.2.2; la prueba de compilacion no
+   sustituye comprobar que OBS lo cargue y reciba audio.
 4. Probar el flujo completo en un Mac: DAW con VST3 Sender, OBS con Receiver,
    audio mono/estereo, reinicio de cada aplicacion, cierre del emisor y una
    segunda instancia del emisor. Ejecutar el validador VST3 y comprobar ambas
    arquitecturas (`arm64` y `x86_64`).
 
-Cuando esas pruebas pasen, un `.pkg` sin firma Developer ID podra instalar el
-VST3 en `/Library/Audio/Plug-Ins/VST3` y el bundle de OBS en la ruta de plugins
-que OBS documenta para macOS,
-`~/Library/Application Support/obs-studio/plugins`. Los binarios para Apple
-Silicon pueden recibir firma local *ad hoc*, sin certificado de pago. Un
-workflow manual de GitHub Actions puede generar el paquete dentro de la cuota
-gratuita disponible, sin ejecutar builds en cada push.
+El workflow de esta rama construye ambos componentes y prepara un `.pkg` sin
+firma Developer ID y un `.zip` para instalacion manual. El paquete usa firma
+local *ad hoc* gratuita para los bundles. La instalacion es por usuario:
+`~/Library/Audio/Plug-Ins/VST3` y
+`~/Library/Application Support/obs-studio/plugins`. El repositorio publico usa
+runners estandar de GitHub Actions sin cargo de minutos de compilacion.
 
-Este documento no anuncia compatibilidad macOS ni habilita un instalador hasta
-que el emisor y el receptor funcionen juntos en un Mac.
+La publicacion como release debe esperar a que el emisor y el receptor
+funcionen juntos en un Mac con un DAW y OBS.
