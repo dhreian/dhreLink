@@ -47,7 +47,7 @@ jobs:
         run: cmake --build build/macos-vst3 --config Release --target dhrelink_sender --parallel 3
 
   receiver:
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
