@@ -41,11 +41,12 @@ if [[ ! -d "$bundle" ]]; then
   exit 1
 fi
 binary="$bundle/Contents/MacOS/dhreLink"
-lipo -verify_arch arm64 x86_64 "$binary"
+lipo "$binary" -verify_arch arm64 x86_64
 codesign --force --deep --sign - "$bundle"
 codesign --verify --deep --strict "$bundle"
 
 dist_dir="$repo_dir/dist"
 mkdir -p "$dist_dir"
-ditto -c -k --sequesterRsrc "$bundle" "$dist_dir/dhreLink-Receiver-macos-universal-unsigned.zip"
+(cd "$build_dir/Release" && ditto -c -k --sequesterRsrc dhreLink.plugin \
+  "$dist_dir/dhreLink-Receiver-macos-universal-unsigned.zip")
 echo "OBS Receiver: $dist_dir/dhreLink-Receiver-macos-universal-unsigned.zip"
