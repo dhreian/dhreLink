@@ -1,5 +1,6 @@
 add_library(dhrelink_core STATIC)
 add_library(dhreLink::core ALIAS dhrelink_core)
+set_target_properties(dhrelink_core PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 
 target_include_directories(dhrelink_core
   PUBLIC

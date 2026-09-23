@@ -4,6 +4,10 @@ if(NOT EXISTS "${VST3_SDK_ROOT}/CMakeLists.txt")
   message(FATAL_ERROR "DHRELINK_BUILD_VST3 requires -DVST3_SDK_ROOT=<path-to-vst3sdk>")
 endif()
 
+if(APPLE)
+  enable_language(OBJCXX)
+endif()
+
 if(NOT TARGET sdk)
   set(SMTG_ENABLE_VST3_PLUGIN_EXAMPLES OFF CACHE BOOL "" FORCE)
   set(SMTG_ENABLE_VST3_HOSTING_EXAMPLES OFF CACHE BOOL "" FORCE)
@@ -11,7 +15,11 @@ if(NOT TARGET sdk)
   set(SMTG_CREATE_BUNDLE_FOR_WINDOWS ON CACHE BOOL "" FORCE)
   set(SMTG_CREATE_PLUGIN_LINK OFF CACHE BOOL "" FORCE)
   set(SMTG_CREATE_MODULE_INFO ON CACHE BOOL "" FORCE)
-  set(SMTG_RUN_VST_VALIDATOR ON CACHE BOOL "" FORCE)
+  if(APPLE)
+    set(SMTG_RUN_VST_VALIDATOR OFF CACHE BOOL "" FORCE)
+  else()
+    set(SMTG_RUN_VST_VALIDATOR ON CACHE BOOL "" FORCE)
+  endif()
   set(SMTG_USE_STATIC_CRT ON CACHE BOOL "" FORCE)
   add_subdirectory("${VST3_SDK_ROOT}" "${CMAKE_BINARY_DIR}/vst3sdk" EXCLUDE_FROM_ALL)
 endif()
@@ -22,18 +30,24 @@ set(dhrelink_sender_sources
   source/cids.hpp
   source/sender_controller.cpp
   source/sender_controller.hpp
-  source/sender_editor.cpp
   source/sender_editor.hpp
   source/sender_entry.cpp
   source/sender_processor.cpp
   source/sender_processor.hpp
-  resources/dhrelink_resources.rc
-  resources/resource.h
   resources/fonts/Quintessential-Regular.ttf
   resources/fonts/Montserrat-Variable.ttf
   resources/fonts/Quintessential-OFL.txt
   resources/fonts/Montserrat-OFL.txt
 )
+
+if(WIN32)
+  list(APPEND dhrelink_sender_sources
+    source/sender_editor.cpp
+    resources/dhrelink_resources.rc
+    resources/resource.h)
+elseif(APPLE)
+  list(APPEND dhrelink_sender_sources source/sender_editor_mac.mm)
+endif()
 
 set_source_files_properties(
   resources/fonts/Quintessential-Regular.ttf
@@ -48,7 +62,14 @@ smtg_add_vst3plugin(
   PACKAGE_NAME "dhreLink Sender"
   SOURCES_LIST ${dhrelink_sender_sources}
 )
-target_link_libraries(dhrelink_sender PRIVATE sdk dhreLink::core user32 gdi32)
+target_link_libraries(dhrelink_sender PRIVATE sdk dhreLink::core)
+if(WIN32)
+  target_link_libraries(dhrelink_sender PRIVATE user32 gdi32)
+elseif(APPLE)
+  target_link_libraries(dhrelink_sender PRIVATE "-framework AppKit")
+  set_source_files_properties(source/sender_editor_mac.mm PROPERTIES
+    COMPILE_FLAGS "-fno-objc-arc")
+endif()
 target_compile_features(dhrelink_sender PRIVATE cxx_std_20)
 if(MSVC)
   target_compile_options(dhrelink_sender PRIVATE /utf-8)

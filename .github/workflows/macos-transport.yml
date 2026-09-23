@@ -6,6 +6,7 @@ on:
       - .github/workflows/macos-transport.yml
       - CMakeLists.txt
       - src/core/**
+      - src/vst3/**
       - tests/transport_test.cpp
   workflow_dispatch:
 
@@ -24,3 +25,21 @@ jobs:
         run: cmake --build build/macos-core --config Release --parallel 3
       - name: Test shared-memory transport
         run: ctest --test-dir build/macos-core -C Release --output-on-failure
+
+  sender:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch official VST3 SDK
+        run: git clone --depth 1 --branch v3.8.1_build_84 --recurse-submodules --shallow-submodules https://github.com/steinbergmedia/vst3sdk.git .deps/vst3sdk
+      - name: Configure universal VST3 Sender
+        run: >-
+          cmake -S . -B build/macos-vst3 -G Xcode
+          '-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+          -DDHRELINK_BUILD_VST3=ON -DDHRELINK_BUILD_OBS=OFF -DDHRELINK_BUILD_TESTS=OFF
+          -DVST3_SDK_ROOT="$PWD/.deps/vst3sdk"
+      - name: Build universal VST3 Sender
+        run: cmake --build build/macos-vst3 --config Release --target dhrelink_sender --parallel 3
