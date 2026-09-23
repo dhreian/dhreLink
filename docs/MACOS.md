@@ -11,10 +11,10 @@ solo uno de ellos produciria una instalacion inutilizable.
    `mmap`, un bloqueo exclusivo de emisor y atomicas entre procesos. El test
    automatizado verifica bloques, estado, cierre y reconexion. Aun hace falta
    una prueba de audio de extremo a extremo dentro del DAW y OBS.
-2. Crear una vista nativa macOS para el VST3. El editor actual solo acepta
-   `kPlatformTypeHWND` y usa GDI/Win32. En Mac, el host entrega una `NSView`.
-   Los recursos `.rc` e `.ico` y los enlaces a `user32`/`gdi32` se deben limitar
-   a Windows.
+2. Probar la nueva vista `NSView` del VST3 Sender dentro de un DAW real. El
+   editor macOS muestra conexion y formato de audio, y el build universal
+   (`arm64` y `x86_64`) se comprueba en CI. Los recursos `.rc` e `.ico` y los
+   enlaces a `user32`/`gdi32` quedan limitados a Windows.
 3. Compilar el receptor como bundle `.plugin` para OBS macOS, enlazado contra
    una version compatible de `libobs`. La logica de recepcion de audio es en gran
    parte independiente de Windows, pero el CMake actual exige `obs.lib` y
