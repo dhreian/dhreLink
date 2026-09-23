@@ -1,9 +1,10 @@
 # dhreLink para macOS: estado y requisitos
 
-**Estado actual:** el Sender VST3 universal, el receptor OBS universal y el
-transporte local ya compilan en GitHub Actions. El empaquetado `.pkg` y `.zip`
-esta automatizado pero aun requiere verificar su resultado y probar audio real
-entre un DAW y OBS en Mac. No se anuncia todavia una version funcional.
+**Estado actual:** el transporte local y las compilaciones universales del
+Sender VST3 y el receptor OBS pasan en GitHub Actions. El workflow tambien
+genera un `.pkg` sin firma Developer ID y un `.zip`; el artefacto se verifico
+por estructura y hashes SHA-256. Aun falta probar audio real entre un DAW y
+OBS en Mac. No se anuncia todavia una version funcional.
 
 ## Trabajo de portabilidad necesario
 
