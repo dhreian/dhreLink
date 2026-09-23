@@ -9,6 +9,9 @@
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#else
+#include <sys/wait.h>
+#include <unistd.h>
 #endif
 
 namespace {
@@ -20,11 +23,11 @@ bool nearlyEqual(float left, float right) {
 } // namespace
 
 int main() {
-#if !defined(_WIN32)
-  std::cout << "Shared-memory transport is currently implemented for Windows only.\n";
-  return 0;
-#else
+#if defined(_WIN32)
   const auto streamId = "transport-test-" + std::to_string(GetCurrentProcessId());
+#else
+  const auto streamId = "transport-test-" + std::to_string(getpid());
+#endif
   dhrelink::StreamWriter writer;
   if (!writer.open(streamId, "Transport Test")) {
     std::cerr << "Could not open writer.\n";
@@ -88,6 +91,28 @@ int main() {
   if (!nearlyEqual(streamStatus.peakLeft, left.back())) return 16;
   if (!nearlyEqual(streamStatus.peakRight, -right.back())) return 17;
 
+#if !defined(_WIN32)
+  // The sender and OBS receiver run in separate processes. Verify that a
+  // fresh process can discover and read the published shared-memory block.
+  const auto child = fork();
+  if (child < 0) return 25;
+  if (child == 0) {
+    dhrelink::StreamReader processReader;
+    dhrelink::AudioBlock processBlock;
+    const bool good = processReader.open(streamId) &&
+      processReader.read(processBlock) == dhrelink::ReadStatus::audio &&
+      processBlock.samplePosition == 12'345 &&
+      nearlyEqual(processBlock.samples[0][127], left[127]);
+    _exit(good ? 0 : 1);
+  }
+  int childStatus = 0;
+  if (waitpid(child, &childStatus, 0) != child ||
+      !WIFEXITED(childStatus) || WEXITSTATUS(childStatus) != 0) {
+    std::cerr << "A separate process could not read the stream.\n";
+    return 26;
+  }
+#endif
+
   writer.close();
   if (reader.read(block) != dhrelink::ReadStatus::senderDisconnected) {
     std::cerr << "Reader did not detect sender removal.\n";
@@ -122,5 +147,4 @@ int main() {
 
   std::cout << "dhreLink shared-memory transport passed.\n";
   return 0;
-#endif
 }

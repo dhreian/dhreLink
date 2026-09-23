@@ -9,6 +9,8 @@ target_include_directories(dhrelink_core
 if(WIN32)
   target_sources(dhrelink_core PRIVATE src/shared_audio_stream_win.cpp)
   target_compile_definitions(dhrelink_core PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
+elseif(APPLE OR UNIX)
+  target_sources(dhrelink_core PRIVATE src/shared_audio_stream_posix.cpp)
 else()
   target_sources(dhrelink_core PRIVATE src/shared_audio_stream_stub.cpp)
 endif()

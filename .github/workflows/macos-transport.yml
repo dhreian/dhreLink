@@ -1,0 +1,26 @@
+name: macOS transport
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/macos-transport.yml
+      - CMakeLists.txt
+      - src/core/**
+      - tests/transport_test.cpp
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transport:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure core tests
+        run: cmake -S . -B build/macos-core -DDHRELINK_BUILD_VST3=OFF -DDHRELINK_BUILD_OBS=OFF -DDHRELINK_BUILD_TESTS=ON
+      - name: Build core tests
+        run: cmake --build build/macos-core --config Release --parallel 3
+      - name: Test shared-memory transport
+        run: ctest --test-dir build/macos-core -C Release --output-on-failure
