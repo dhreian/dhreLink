@@ -2,7 +2,7 @@
 
 Los cambios importantes de dhreLink se documentan en este archivo.
 
-## 1.0 — 2026-09-12
+## 1.0.0 — 2026-09-12
 
 - Actualización visual: morado principal `#874DFA` y tipografías Quintessential y Montserrat
   en la interfaz del emisor VST3.

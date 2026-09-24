@@ -4,7 +4,7 @@
 
 | Plataforma | Versión | Estado | Archivos |
 | --- | --- | --- | --- |
-| Windows x64 | 1.0 | Estable | Instalador `.exe` |
+| Windows x64 | 1.0.0 | Estable | Instalador `.exe` |
 | macOS arm64 + x86_64 | 0.1.0 | Beta sin firma de desarrollador ni notarización | `.pkg`, `.zip` y SHA-256 |
 
 Descarga los paquetes desde [GitHub Releases](https://github.com/dhreian/dhreLink/releases). La beta Mac incluye Sender VST3 y Receiver para OBS; requiere pruebas adicionales en DAW y OBS reales. Su firma ad hoc no sustituye la certificación de Apple y puede requerir autorización manual en Ajustes del Sistema.
@@ -30,7 +30,7 @@ muestra simplemente como **dhreLink** y usa la interfaz estándar de Windows.
 ## Instalar y usar
 
 1. Cierra el DAW y OBS si están abiertos y ejecuta
-   `dhreLink-v1.0-windows-x64-setup.exe`. Elige español o inglés, acepta la licencia
+   `dhreLink-v1.0.0-windows-x64-setup.exe`. Elige español o inglés, acepta la licencia
    y selecciona la carpeta VST3 que analiza tu DAW. La ruta predeterminada
    es la recomendada.
 2. En el DAW, añade **dhreLink Sender** al final del master o del bus que quieras
@@ -99,7 +99,7 @@ Desde PowerShell:
 El resultado se guarda en:
 
 ```text
-dist\installer\dhreLink-v1.0-windows-x64-setup.exe
+dist\installer\dhreLink-v1.0.0-windows-x64-setup.exe
 ```
 
 ## Estructura del repositorio

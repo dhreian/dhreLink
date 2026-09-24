@@ -1,4 +1,4 @@
-ACUERDO DE LICENCIA DE USUARIO FINAL - dhreLink 1.0
+ACUERDO DE LICENCIA DE USUARIO FINAL - dhreLink 1.0.0
 Copyright (c) 2026 dhreian. Todos los derechos reservados.
 
 Este acuerdo regula la instalación y el uso de dhreLink, compuesto por un plugin VST3 para Windows y una fuente de audio para OBS Studio, junto con su documentación (el "Software"). Al seleccionar "Acepto" e instalarlo, usted acepta estas condiciones. Si no está de acuerdo, cancele la instalación.

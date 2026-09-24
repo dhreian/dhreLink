@@ -1,5 +1,5 @@
 #define ProductName "dhreLink"
-#define ProductVersion "1.0"
+#define ProductVersion "1.0.0"
 #define ProductFileVersion "1.0.0.0"
 #define PublisherName "dhreian"
 

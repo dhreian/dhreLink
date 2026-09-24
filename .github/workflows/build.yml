@@ -61,7 +61,7 @@ jobs:
       - name: Verify Installer Output
         shell: pwsh
         run: |
-          $installerPath = "dist\installer\dhreLink-v1.0-windows-x64-setup.exe"
+          $installerPath = "dist\installer\dhreLink-v1.0.0-windows-x64-setup.exe"
           if (-not (Test-Path -LiteralPath $installerPath)) {
             throw "Expected installer was not produced: $installerPath"
           }
@@ -74,5 +74,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dhreLink-windows-x64-setup
-          path: dist/installer/dhreLink-v1.0-windows-x64-setup.exe
+          path: dist/installer/dhreLink-v1.0.0-windows-x64-setup.exe
           if-no-files-found: error

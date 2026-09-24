@@ -290,7 +290,7 @@ if (-not [StringComparer]::OrdinalIgnoreCase.Equals($expectedInstallerRoot, $res
 [IO.Directory]::CreateDirectory($resolvedInstallerRoot) | Out-Null
 Invoke-Checked $iscc @((Join-Path $repositoryRoot 'packaging\windows\dhreLink.iss'))
 
-$installer = Join-Path $installerRoot 'dhreLink-v1.0-windows-x64-setup.exe'
+$installer = Join-Path $installerRoot 'dhreLink-v1.0.0-windows-x64-setup.exe'
 if (-not (Test-Path -LiteralPath $installer -PathType Leaf)) {
   throw "Installer was not produced: $installer"
 }
