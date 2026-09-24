@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "colors": {
+    "Black": "#0A0A0C",
+    "Surface": "#161619",
+    "SurfaceRaised": "#222227",
+    "SurfaceHover": "#2B2B31",
+    "Line": "#34343A",
+    "White": "#FFFFFF",
+    "Muted": "#BEBEC8",
+    "Purple": "#874DFA",
+    "PurpleHover": "#9969FF",
+    "Connected": "#5FE39B",
+    "Warning": "#FFBE5C"
+  },
+  "metrics": {
+    "Hairline": 1,
+    "HalfGap": 4,
+    "CompactSpace": 8,
+    "MediumSpace": 12,
+    "Space": 16,
+    "HeaderHeight": 46,
+    "HeaderInset": 7,
+    "HeaderIconSize": 32,
+    "ControlHeight": 40,
+    "CompactControlHeight": 28,
+    "FooterHeight": 40,
+    "TitlePixels": 29,
+    "BodyPixels": 17,
+    "SmallPixels": 15,
+    "CreditPixels": 14,
+    "RegularWeight": 400,
+    "StrongWeight": 700
+  },
+  "fonts": {
+    "Title": "Quintessential",
+    "Body": "Montserrat"
+  }
+}

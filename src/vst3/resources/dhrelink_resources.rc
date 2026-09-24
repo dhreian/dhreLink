@@ -1,0 +1,6 @@
+#include "resource.h"
+
+IDR_FONT_QUINTESSENTIAL RCDATA "fonts\\Quintessential-Regular.ttf"
+IDR_FONT_MONTSERRAT RCDATA "fonts\\Montserrat-Regular.ttf"
+IDR_FONT_MONTSERRAT_BOLD RCDATA "fonts\\Montserrat-Bold.ttf"
+IDI_DHRELINK_ICON ICON "../../../assets/brand/dhreian-mark-purple.ico"

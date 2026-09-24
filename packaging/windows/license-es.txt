@@ -1,0 +1,16 @@
+ACUERDO DE LICENCIA DE USUARIO FINAL - dhreLink 1.0
+Copyright (c) 2026 dhreian. Todos los derechos reservados.
+
+Este acuerdo regula la instalación y el uso de dhreLink, compuesto por un plugin VST3 para Windows y una fuente de audio para OBS Studio, junto con su documentación (el "Software"). Al seleccionar "Acepto" e instalarlo, usted acepta estas condiciones. Si no está de acuerdo, cancele la instalación.
+
+1. Licencia de uso. dhreian le concede una licencia personal, no exclusiva y no transferible para instalar y usar una copia obtenida por un canal autorizado en equipos que usted controla. Puede usar el Software en producciones de audio y video personales o comerciales. El contenido que usted cree sigue siendo suyo. Esta licencia no transfiere la propiedad del Software ni concede derechos sobre su código fuente.
+
+2. Restricciones. No puede vender, redistribuir, sublicenciar, modificar ni presentar el Software como propio sin autorización escrita de dhreian. No puede eliminar avisos de autoría ni usar la marca dhreian para sugerir respaldo. La ingeniería inversa solo queda permitida cuando la ley aplicable impida prohibirla.
+
+3. Componentes de terceros. Los componentes de terceros incluidos conservan sus propias licencias y avisos. Este acuerdo no limita los derechos que esas licencias le concedan.
+
+4. Garantías y responsabilidad. El Software se entrega "tal cual", sin garantía de compatibilidad con todos los DAW, versiones de OBS Studio, sistemas o equipos. En la medida permitida por la ley aplicable, dhreian no responde por pérdidas indirectas, lucro cesante ni pérdida de proyectos o datos causada por el uso o la imposibilidad de uso del Software. Nada en este acuerdo excluye derechos irrenunciables del consumidor ni responsabilidades que la ley no permita excluir.
+
+5. Vigencia. La licencia termina si incumple materialmente este acuerdo; en tal caso, deje de usar el Software y elimine las copias que controle. Las actualizaciones futuras pueden venir con condiciones propias; este texto rige la versión que acompaña.
+
+Este acuerdo se aplica solo a los componentes distribuidos en formato binario. Para consultas sobre permisos adicionales, contacte a dhreian por sus canales oficiales.

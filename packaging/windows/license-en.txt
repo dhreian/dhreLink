@@ -1,0 +1,16 @@
+END-USER LICENSE AGREEMENT - dhreLink 1.0
+Copyright (c) 2026 dhreian. All rights reserved.
+
+This agreement governs installation and use of dhreLink, consisting of a Windows VST3 plug-in and an OBS Studio audio source, together with its documentation (the "Software"). By selecting "I accept" and installing it, you agree to these terms. If you do not agree, cancel installation.
+
+1. License to use. dhreian grants you a personal, non-exclusive, non-transferable license to install and use a copy obtained through an authorized channel on computers you control. You may use the Software in personal or commercial audio and video productions. Content you create remains yours. This license does not transfer ownership of the Software or grant rights to its source code.
+
+2. Restrictions. You may not sell, redistribute, sublicense, modify, or present the Software as your own without dhreian's written permission. You may not remove authorship notices or use the dhreian brand to imply endorsement. Reverse engineering is permitted only where applicable law does not allow it to be prohibited.
+
+3. Third-party components. Included third-party components retain their own licenses and notices. This agreement does not limit rights granted to you by those licenses.
+
+4. Warranty and liability. The Software is provided "as is", with no guarantee of compatibility with every DAW, OBS Studio version, system, or device. To the extent allowed by applicable law, dhreian is not liable for indirect loss, lost profits, or lost projects or data arising from use or inability to use the Software. Nothing in this agreement excludes non-waivable consumer rights or liability that cannot legally be excluded.
+
+5. Term. The license ends if you materially breach this agreement; you must then stop using the Software and delete copies you control. Future updates may carry their own terms; this text governs the version it accompanies.
+
+This agreement applies only to the distributed binary components. Contact dhreian through its official channels for additional permissions.

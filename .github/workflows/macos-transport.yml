@@ -1,0 +1,102 @@
+name: macOS transport
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/macos-transport.yml
+      - CMakeLists.txt
+      - src/core/**
+      - src/vst3/**
+      - src/obs/**
+      - scripts/build-obs-macos.sh
+      - tests/transport_test.cpp
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transport:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure core tests
+        run: cmake -S . -B build/macos-core -DDHRELINK_BUILD_VST3=OFF -DDHRELINK_BUILD_OBS=OFF -DDHRELINK_BUILD_TESTS=ON
+      - name: Build core tests
+        run: cmake --build build/macos-core --config Release --parallel 3
+      - name: Test shared-memory transport
+        run: ctest --test-dir build/macos-core -C Release --output-on-failure
+
+  sender:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch official VST3 SDK
+        run: git clone --depth 1 --branch v3.8.1_build_84 --recurse-submodules --shallow-submodules https://github.com/steinbergmedia/vst3sdk.git .deps/vst3sdk
+      - name: Configure universal VST3 Sender
+        run: >-
+          cmake -S . -B build/macos-vst3 -G Xcode
+          '-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64'
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+          -DDHRELINK_BUILD_VST3=ON -DDHRELINK_BUILD_OBS=OFF -DDHRELINK_BUILD_TESTS=OFF
+          -DVST3_SDK_ROOT="$PWD/.deps/vst3sdk"
+      - name: Build universal VST3 Sender
+        run: cmake --build build/macos-vst3 --config Release --target dhrelink_sender --parallel 3
+      - name: Archive VST3 Sender
+        run: |
+          mkdir -p dist
+          cd build/macos-vst3/VST3/Release
+          ditto -c -k --sequesterRsrc --keepParent 'dhreLink Sender.vst3' "$GITHUB_WORKSPACE/dist/dhreLink-Sender-macos-universal-unsigned.zip"
+      - name: Upload unsigned VST3 Sender
+        uses: actions/upload-artifact@v4
+        with:
+          name: dhreLink-Sender-macos-universal-unsigned
+          path: dist/dhreLink-Sender-macos-universal-unsigned.zip
+          if-no-files-found: error
+          retention-days: 3
+
+  receiver:
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build universal OBS Receiver
+        run: bash scripts/build-obs-macos.sh
+      - name: Upload unsigned OBS bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: dhreLink-Receiver-macos-universal-unsigned
+          path: dist/dhreLink-Receiver-macos-universal-unsigned.zip
+          if-no-files-found: error
+          retention-days: 3
+
+  package:
+    needs: [sender, receiver]
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dhreLink-Sender-macos-universal-unsigned
+          path: downloads/sender
+      - uses: actions/download-artifact@v4
+        with:
+          name: dhreLink-Receiver-macos-universal-unsigned
+          path: downloads/receiver
+      - name: Assemble unsigned installer and manual ZIP
+        run: |
+          mkdir -p extracted/sender extracted/receiver
+          ditto -x -k downloads/sender/dhreLink-Sender-macos-universal-unsigned.zip extracted/sender
+          ditto -x -k downloads/receiver/dhreLink-Receiver-macos-universal-unsigned.zip extracted/receiver
+          bash scripts/package-macos.sh 'extracted/sender/dhreLink Sender.vst3' 'extracted/receiver/dhreLink.plugin'
+      - name: Upload installer and ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: dhreLink-macos-universal-unsigned
+          path: dist/dhreLink-*-macos-universal-unsigned.*
+          if-no-files-found: error
+          retention-days: 7

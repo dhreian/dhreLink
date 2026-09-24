@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dhreLink VST3 UI</title>
+  <link rel="stylesheet" href="../../assets/ui/brand-theme.css">
+  <style>
+    @font-face {
+      font-family: "Quintessential";
+      src: url("../../src/vst3/resources/fonts/Quintessential-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "Montserrat";
+      src: url("../../src/vst3/resources/fonts/Montserrat-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "Montserrat";
+      src: url("../../src/vst3/resources/fonts/Montserrat-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    :root {
+      color-scheme: dark;
+      font-synthesis: none;
+
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 420px;
+      height: 180px;
+      margin: 0;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .plugin {
+      position: relative;
+      width: 420px;
+      height: 180px;
+      overflow: hidden;
+      background: var(--black);
+      color: var(--white);
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .topbar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: var(--header-height);
+      padding: 0 var(--space);
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .logo {
+      display: block;
+      width: 32px;
+      height: 32px;
+      flex: none;
+    }
+
+    .brand {
+      margin: 1px 0 0 8px;
+      font-family: "Quintessential", serif;
+      font-size: var(--title-pixels);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.2px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+      font-size: var(--small-pixels);
+      font-weight: var(--regular-weight);
+      line-height: 1;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--connected);
+    }
+
+    .route {
+      position: absolute;
+      inset: 58px 16px auto;
+      height: var(--compact-control-height);
+    }
+
+    .endpoint {
+      position: absolute;
+      top: 0;
+      display: grid;
+      width: 58px;
+      height: var(--compact-control-height);
+      place-items: center;
+      background: var(--surface-raised);
+      font-size: var(--body-pixels);
+      font-weight: var(--strong-weight);
+    }
+
+    .endpoint.daw {
+      left: 0;
+    }
+
+    .endpoint.obs {
+      right: 0;
+    }
+
+    .route-arrow {
+      position: absolute;
+      top: 0;
+      right: 68px;
+      left: 68px;
+      width: calc(100% - 136px);
+      height: var(--compact-control-height);
+      overflow: visible;
+    }
+
+    .meters {
+      position: absolute;
+      top: 101px;
+      right: 16px;
+      left: 16px;
+      display: grid;
+      row-gap: 14px;
+    }
+
+    .meter {
+      display: grid;
+      grid-template-columns: 14px 1fr;
+      align-items: center;
+      column-gap: 6px;
+      height: 6px;
+    }
+
+    .meter-label {
+      color: var(--muted);
+      font-size: var(--small-pixels);
+      font-weight: var(--regular-weight);
+      line-height: 1;
+    }
+
+    .meter-track {
+      height: 6px;
+      overflow: hidden;
+      background: var(--surface-raised);
+    }
+
+    .meter-level {
+      height: 100%;
+      background: var(--purple);
+    }
+
+    .meter:first-child .meter-level {
+      width: 76%;
+    }
+
+    .meter:last-child .meter-level {
+      width: 62%;
+    }
+
+    .footer {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      height: var(--footer-height);
+      background: var(--surface);
+      padding: 0 var(--space);
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: var(--credit-pixels);
+      font-weight: var(--regular-weight);
+      line-height: 1;
+    }
+
+    .credit {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+      color: var(--purple);
+      font-size: var(--credit-pixels);
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    .signature {
+      margin-top: 1px;
+      color: inherit;
+      font-family: "Montserrat", sans-serif;
+      font-size: inherit;
+      font-weight: 400;
+      font-style: inherit;
+    }
+  </style>
+</head>
+<body>
+  <main class="plugin" aria-label="Interfaz de dhreLink Sender">
+    <header class="topbar">
+      <img class="logo" src="../brand/dhreian-mark-purple-512.png" alt="" aria-hidden="true">
+      <div class="brand">dhreLink</div>
+      <div class="status">
+        <span class="status-dot"></span>
+        <span>Connected</span>
+      </div>
+    </header>
+
+    <section class="route" aria-label="Ruta de audio desde el DAW hasta OBS">
+      <div class="endpoint daw">DAW</div>
+      <svg class="route-arrow" viewBox="0 0 252 29" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M1 14.5H250M243 7.5L250 14.5L243 21.5"
+              fill="none" stroke="#874DFA" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"
+              vector-effect="non-scaling-stroke"/>
+      </svg>
+      <div class="endpoint obs">OBS</div>
+    </section>
+
+    <section class="meters" aria-label="Niveles de audio">
+      <div class="meter">
+        <span class="meter-label">L</span>
+        <div class="meter-track"><div class="meter-level"></div></div>
+      </div>
+      <div class="meter">
+        <span class="meter-label">R</span>
+        <div class="meter-track"><div class="meter-level"></div></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>48 kHz&nbsp; | &nbsp;2 ch</span>
+      <span class="credit">
+        <span>DEVELOPED BY</span>
+        <span class="signature">DHREIAN</span>
+      </span>
+    </footer>
+  </main>
+</body>
+</html>
